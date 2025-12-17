@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI News Summarizer - India News</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a2980, #26d0ce);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* Top Navigation */
+    .top-navbar {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 0;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    .top-navbar .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .location-info span {
+      margin-right: 20px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-left: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-regional {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-epaper {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-signin {
+      background: #1a2980;
+      color: white;
+    }
+
+    .btn-login {
+      background: #1a2980;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Main Navigation */
+    .main-navbar {
+      background: white;
+      padding: 18px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-navbar .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #1a2980;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .search-box {
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      margin-right: 12px;
+      width: 400px;
+      font-size: 1rem;
+    }
+
+    .search-btn {
+      background: #1a2980;
+      color: white;
+      border-radius: 30px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .utility-container {
+      display: flex;
+      align-items: center;
+    }
+
+    /* New Navigation Bar Styles */
+    .news-categories {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px 0 30px;
+      padding: 15px;
+    }
+
+    .categories-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .categories-title {
+      font-weight: bold;
+      color: #1a2980;
+      margin-right: 15px;
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
+
+    .categories-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .category-btn {
+      background: rgba(26, 41, 128, 0.1);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #1a2980;
+      font-weight: 500;
+    }
+
+    .category-btn:hover {
+      background: rgba(26, 41, 128, 0.2);
+    }
+
+    .category-btn.active {
+      background: #1a2980;
+      color: white;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #1a2980;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .news-item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .news-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 3px solid #1a2980;
+    }
+
+    .placeholder-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(to right, #1a2980, #26d0ce);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      border-bottom: 3px solid #1a2980;
+    }
+
+    .news-content {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news-title {
+      font-size: 1.25rem;
+      margin: 0 0 12px 0;
+      color: #1a2980;
+      line-height: 1.4;
+    }
+
+    .news-summary {
+      flex-grow: 1;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .news-meta {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 15px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .read-more {
+      align-self: flex-start;
+      background: linear-gradient(to right, #1a2980, #26d0ce);
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .read-more:hover {
+      background: linear-gradient(to right, #26d0ce, #1a2980);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.3rem;
+      color: white;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error-message {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      color: #e74c3c;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      padding: 30px 0 10px;
+      margin-top: 40px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .footer-left h2 {
+      margin-bottom: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      margin-bottom: 10px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 15px;
+    }
+
+    .footer-socials a {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 968px) {
+      .main-navbar .container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .nav-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .search-container {
+        width: 60%;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .top-navbar .container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .categories-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .categories-nav {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .btn {
+        margin: 5px;
+      }
+
+      .nav-right {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .search-container {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      .utility-container {
+        justify-content: center;
+      }
+    }
+
+    .btn-signin {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Navigation Bar -->
+  <div class="top-navbar">
+    <div class="container">
+      <div class="location-info">
+        <span id="current-date"><i class="bi bi-calendar me-1"></i> Loading date...</span>
+        <span id="current-location"><i class="bi bi-geo-alt me-1"></i> Loading location...</span>
+      </div>
+
+      <div>
+        <a href="register.html" class="btn btn-signin">
+          <i class="bi bi-person-circle me-2"></i> Sign Up
+        </a>
+        <button class="btn btn-login" onclick="window.location.href='login.html'">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <nav class="main-navbar">
+    <div class="container">
+      <a class="logo-container" href="#">
+        <i class="bi bi-newspaper logo-icon"></i>
+        <span class="logo-text">Newsly</span>
+      </a>
+
+      <div class="nav-right">
+        <div class="utility-container">
+          <button class="btn btn-epaper">
+            <i class="bi bi-info-circle"></i> About Us
+          </button>
+          <button class="btn btn-epaper">
+            <i class="bi bi-envelope"></i> Contact
+          </button>
+        </div>
+
+        <div class="search-container">
+          <input class="search-box" type="search" placeholder="Search news..." aria-label="Search">
+          <button class="btn search-btn">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- New Categories Navigation Bar -->
+    <div class="news-categories">
+      <div class="categories-container">
+        <div class="categories-nav">
+          <button class="category-btn active" data-category="top-stories">Top Stories</button>
+          <button class="category-btn" data-category="business">Business</button>
+          <button class="category-btn" data-category="sports">Sports</button>
+          <button class="category-btn" data-category="entertainment">Entertainment</button>
+          <button class="category-btn" data-category="technology">Technology</button>
+          <button class="category-btn" data-category="health">Health</button>
+          <button class="category-btn" data-category="world">World</button>
+        </div>
+      </div>
+    </div>
+
+    <header>
+    <button class="btn btn-epaper" 
+        onclick="window.open('https://v0.app/chat/social-media-analyzer-fkKB2czMOYr?b=b_DLuRoVcpDab', '_blank')"
+        style="background-color: #0078D4; color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease;">
+  <i class="bi bi-graph-up"></i> Trend Analyzer
+</button>
+
+    </header>
+
+    <div id="error-message" class="error-message" style="display: none;"></div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading latest news and generating AI summaries...</p>
+    </div>
+
+    <div id="news-container" class="news-grid">
+      <!-- Sample news items for demonstration -->
+      <div class="news-item">
+        <div class="placeholder-image"><i class="bi bi-moon-stars"></i></div>
+        <div class="news-content">
+          <h2 class="news-title">Total lunar eclipse on the intervening night of Sept. 7 and 8</h2>
+          <p class="news-summary"><strong>Summary:</strong> Total lunar eclipse visible in India. The eclipse will be
+            visible across multiple regions with optimal viewing conditions expected.</p>
+          <div class="news-meta">
+            <span>Source: Astronomy Today</span> | <span>Sep 5, 2023</span>
+          </div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="read-more">
+            Read Full Article <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="placeholder-image"><i class="bi bi-flag"></i></div>
+        <div class="news-content">
+          <h2 class="news-title">Toronto Honda Indy to move to Markham street circuit</h2>
+          <p class="news-summary"><strong>Summary:</strong> The race will take place on a new street circuit designed to
+            enhance spectator experience and driver challenge.</p>
+          <div class="news-meta">
+            <span>Source: Sports Network</span> | <span>Sep 4, 2023</span>
+          </div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="read-more">
+            Read Full Article <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="news-item">
+        <div class="placeholder-image"><i class="bi bi-controller"></i></div>
+        <div class="news-content">
+          <h2 class="news-title">IND vs KOR Hockey today match Live Scorecard Updates</h2>
+          <p class="news-summary"><strong>Summary:</strong> India vs South Korea Live, IND vs KOR Asian Champions Trophy
+            hockey match underway. Follow for minute-by-minute updates.</p>
+          <div class="news-meta">
+            <span>Source: Sports Today</span> | <span>Sep 6, 2023</span>
+          </div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="read-more">
+            Read Full Article <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-left">
+          <h2><i class="bi bi-newspaper"></i> Newsly</h2>
+          <p>Your trusted source for the latest news and updates.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#about"><i class="bi bi-info-circle me-1"></i> About Us</a>
+          <a href="#contact"><i class="bi bi-envelope me-1"></i> Contact</a>
+          <a href="#privacy"><i class="bi bi-shield-lock me-1"></i> Privacy Policy</a>
+        </div>
+
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2023 Newsly. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const API_KEY = "10af7c8972f6198f171c06bdc3f15176";
+      const BASE_URL = "https://gnews.io/api/v4/";
+
+      const newsContainer = document.getElementById("news-container");
+      const loadingIndicator = document.getElementById("loading");
+      const errorMessage = document.getElementById("error-message");
+      const searchBox = document.querySelector(".search-box");
+      const searchBtn = document.querySelector(".search-btn");
+      const categoryButtons = document.querySelectorAll(".category-btn");
+
+      const CATEGORY_MAPPINGS = {
+        "top-stories": { q: "India", lang: "en" },
+        "business": { q: "business", lang: "en" },
+        "sports": { q: "sports", lang: "en" },
+        "entertainment": { q: "entertainment", lang: "en" },
+        "technology": { q: "technology", lang: "en" },
+        "health": { q: "health", lang: "en" },
+        "world": { q: "world", lang: "en" }
+      };
+
+      // Function to format date
+      function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-IN', options);
+      }
+
+      // Function to display news
+      function displayNews(articles) {
+        newsContainer.innerHTML = '';
+
+        if (!articles || articles.length === 0) {
+          errorMessage.textContent = "No news articles found.";
+          errorMessage.style.display = 'block';
+          return;
+        }
+
+        articles.forEach(article => {
+          const item = document.createElement("div");
+          item.className = "news-item";
+
+          const imageHtml = article.image ?
+            `<img src="${article.image}" alt="Article Image" class="news-image" />` :
+            `<div class="placeholder-image"><i class="bi bi-newspaper"></i></div>`;
+
+          // Generate a simple summary from the content
+          const summary = article.description ?
+            `${article.description.substring(0, 150)}...` :
+            "No summary available.";
+
+          item.innerHTML = `
+            ${imageHtml}
+            <div class="news-content">
+              <h2 class="news-title">${article.title}</h2>
+              <p class="news-summary"><strong>Summary:</strong> ${summary}</p>
+              <div class="news-meta">
+                ${article.source?.name ? `<span>Source: ${article.source.name}</span>` : ''}
+                ${article.publishedAt ? ` | <span>${formatDate(article.publishedAt)}</span>` : ''}
+              </div>
+              <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="read-more">
+                Read Full Article <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          `;
+
+          // Open article on click
+          item.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'A') {
+              window.open(article.url, "_blank");
+            }
+          });
+
+          newsContainer.appendChild(item);
+        });
+      }
+      //login page
+      document.querySelector('.btn-login').addEventListener('click', function () {
+        window.location.href = 'login.html';
+      });
+      // Function to fetch news
+      async function fetchNews(category = "top-stories", query = "") {
+        try {
+          loadingIndicator.style.display = 'block';
+          errorMessage.style.display = 'none';
+
+          let params = new URLSearchParams();
+          params.append("apikey", API_KEY);
+
+          if (query) {
+            params.append("q", encodeURIComponent(query));
+            params.append("lang", "en");
+          } else {
+            const categoryParams = CATEGORY_MAPPINGS[category] || CATEGORY_MAPPINGS["top-stories"];
+            Object.entries(categoryParams).forEach(([key, value]) => {
+              params.append(key, value);
+            });
+          }
+
+          const endpoint = query ? "search" : "top-headlines";
+          const res = await fetch(`${BASE_URL}${endpoint}?${params.toString()}`);
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+
+          const data = await res.json();
+          displayNews(data.articles || []);
+        } catch (err) {
+          console.error("Fetch Error:", err);
+          errorMessage.textContent = "Failed to load news. Please try again later.";
+          errorMessage.style.display = 'block';
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      }
+
+      // Category button click handler
+      function onCategoryButtonClick(category) {
+        categoryButtons.forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.category-btn[data-category="${category}"]`).classList.add('active');
+        fetchNews(category);
+      }
+
+      // Set up event listeners
+      categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => onCategoryButtonClick(btn.dataset.category));
+      });
+
+      searchBtn.addEventListener('click', () => {
+        const query = searchBox.value.trim();
+        if (query) {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          fetchNews("", query);
+        }
+      });
+
+      searchBox.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const query = searchBox.value.trim();
+          if (query) {
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            fetchNews("", query);
+          }
+        }
+      });
+
+      // Initialize date and location
+      function updateDateTime() {
+        const now = new Date();
+        const options = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        };
+        document.getElementById('current-date').innerHTML =
+          `<i class="bi bi-calendar me-1"></i> ${now.toLocaleDateString('en-US', options)}`;
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            () => {
+              document.getElementById('current-location').innerHTML =
+                `<i class="bi bi-geo-alt me-1"></i> India`;
+            },
+            () => {
+              document.getElementById('current-location').innerHTML =
+                `<i class="bi bi-geo-alt me-1"></i> India`;
+            }
+          );
+        } else {
+          document.getElementById('current-location').innerHTML =
+            `<i class="bi bi-geo-alt me-1"></i> India`;
+        }
+      }
+
+      updateDateTime();
+      getLocation();
+
+      // Load initial news
+      fetchNews("top-stories");
+    });
+  </script>
+</body>
+
+</html>

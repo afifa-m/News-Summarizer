@@ -1,0 +1,84 @@
+/* General body style */
+body {
+  background: url('./img.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+
+/* Container for the form */
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  width: 350px;
+  text-align: center;
+}
+
+/* Heading */
+.container h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs */
+.container input[type="text"],
+.container input[type="email"],
+.container input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.container input[type="text"]:focus,
+.container input[type="email"]:focus,
+.container input[type="password"]:focus {
+  border-color: #4a68f1;
+  outline: none;
+}
+
+/* Register button */
+.container button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #4a68f1, #223e8f);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.container button:hover {
+  background: linear-gradient(90deg, #223e8f, #4a68f1);
+}
+
+/* Link below form */
+.container p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.container p a {
+  color: #4a68f1;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.container p a:hover {
+  text-decoration: underline;
+}

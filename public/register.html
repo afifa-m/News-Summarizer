@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - News Summarizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Create Account</h2>
+    <form id="regForm">
+      <input type="text" id="fullname" placeholder="Full Name" required /><br />
+      <input type="email" id="email" placeholder="Email" required /><br />
+      <input type="password" id="password" placeholder="Password" required /><br />
+      <input type="password" id="confirm_password" placeholder="Confirm Password" required /><br />
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script>
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm_password').value;
+
+      if (password !== confirm) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname, email, password }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert(data.message || 'Registered successfully!');
+          window.location.href = 'login.html'; // redirect to login page
+        } else {
+          alert(data.message || 'Registration failed');
+        }
+      } catch (err) {
+        alert('Network error');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
